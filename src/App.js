@@ -161,7 +161,10 @@ function App() {
     >
       <Row justify="center" className="centered-container">
         <Col span={24}>
-          <div style={{ fontSize: 24, fontWeight: "bold", display: "flex", justifyContent: "center" }}>Calculator</div>
+          <div style={{ fontSize: 24, fontWeight: "bold", display: "flex", justifyContent: "center" }}>
+            Calculator <br />
+            <br />{" "}
+          </div>
         </Col>
         <Col span={24}>
           <Typography.Text style={{ fontSize: 15 }}>
