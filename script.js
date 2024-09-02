@@ -2,9 +2,6 @@ function normalize_char(number) {
   return String.fromCharCode(number).toUpperCase();
 }
 
-let _type;
-let _vaild;
-
 (function ($) {
   $.fn.caret = function (pos) {
     var target = this[0];
@@ -81,12 +78,12 @@ function add_symbol(code, callback, i) {
 
 function ask_y(callback, i) {
   var wait_timer_ask = setInterval(function () {
-    if ($("#name").css("display") != "none") {
+    if (document.getElementById("name").style.display !== "none") {
       clearInterval(wait_timer_ask);
-      $("#notify").show();
-      $("#name").hide();
+      document.getElementById("notify").style.display = "block";
+      document.getElementById("name").style.display = "none";
       var wait_timer = setInterval(function () {
-        if (window.y_or_Y != undefined) {
+        if (window.y_or_Y !== undefined) {
           callback(window.y_or_Y, i);
           window.y_or_Y = undefined;
           clearInterval(wait_timer);
@@ -96,90 +93,117 @@ function ask_y(callback, i) {
   }, 100);
 }
 
-$(document).ready(function () {
+document.addEventListener("DOMContentLoaded", function () {
   window.y_list = [];
 
-  if (typeof $.cookie("type") == "undefined") $.cookie("type", "chald");
-  _type = "chald";
-  //else
-  //$('#email_cont').show();
-
-  $("#data input").val("");
-  $("#data input").attr("disabled", "true");
-  $("#name").removeAttr("disabled");
-  $("#birthdate").removeAttr("disabled");
-  var type = $.cookie("type");
-  if (type == "pyth") {
-    $('input[name="small"]').show();
-    $("#switch").html("to Chaldean");
-    $("#title").html("Pythagorean");
-  } else {
-    $('input[name="small"]').hide();
-    $("#switch").html("to Pythagorean");
-    $("#title").html("Chaldean");
+  // Cookie handling with vanilla JavaScript
+  function getCookie(name) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length === 2) return parts.pop().split(";").shift();
   }
 
-  $("#switch").click(function () {
-    $("#vowels").val("");
-    $("#consonant").val("");
-    $("#number_total").val("");
-    $("#vowels_total").val("");
-    $("#total").val("");
-    $("#desc_content").html("");
-    $("#desc").hide();
-    $("#stat").html("");
-    if ($.cookie("type") == "chald") {
-      $.removeCookie("type");
-      $.cookie("type", "pyth");
-      $('input[name="small"]').show();
-      $("#title").html("Pythagorean");
-      $("#switch").html("to Chaldean");
-      $("#calculate").click();
+  function setCookie(name, value, days) {
+    var expires = "";
+    if (days) {
+      var date = new Date();
+      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+      expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+  }
+
+  function removeCookie(name) {
+    document.cookie = name + "=; Max-Age=-99999999;";
+  }
+
+  if (typeof getCookie("type") === "undefined") setCookie("type", "chald", 365);
+  _type = "chald";
+
+  document.querySelectorAll("#data input").forEach(function (input) {
+    input.value = "";
+    input.disabled = true;
+  });
+
+  document.getElementById("name").disabled = false;
+  document.getElementById("birthdate").disabled = false;
+
+  var type = getCookie("type");
+  if (type === "pyth") {
+    document.querySelectorAll('input[name="small"]').forEach(function (input) {
+      input.style.display = "block";
+    });
+    document.getElementById("switch").innerHTML = "to Chaldean";
+    document.getElementById("title").innerHTML = "Pythagorean";
+  } else {
+    document.querySelectorAll('input[name="small"]').forEach(function (input) {
+      input.style.display = "none";
+    });
+    document.getElementById("switch").innerHTML = "to Pythagorean";
+    document.getElementById("title").innerHTML = "Chaldean";
+  }
+
+  document.getElementById("switch").addEventListener("click", function () {
+    document.getElementById("vowels").value = "";
+    document.getElementById("consonant").value = "";
+    document.getElementById("number_total").value = "";
+    document.getElementById("vowels_total").value = "";
+    document.getElementById("total").value = "";
+    document.getElementById("desc_content").innerHTML = "";
+    document.getElementById("desc").style.display = "none";
+    document.getElementById("stat").innerHTML = "";
+
+    if (getCookie("type") === "chald") {
+      removeCookie("type");
+      setCookie("type", "pyth", 365);
+      document.querySelectorAll('input[name="small"]').forEach(function (input) {
+        input.style.display = "block";
+      });
+      document.getElementById("title").innerHTML = "Pythagorean";
+      document.getElementById("switch").innerHTML = "to Chaldean";
+      document.getElementById("calculate").click();
     } else {
-      $.removeCookie("type");
-      $('input[name="small"]').hide();
-      $.cookie("type", "chald");
-      $("#title").html("Chaldean");
-      $("#switch").html("to Pythagorean");
-      $("#calculate").click();
+      removeCookie("type");
+      setCookie("type", "chald", 365);
+      document.querySelectorAll('input[name="small"]').forEach(function (input) {
+        input.style.display = "none";
+      });
+      document.getElementById("title").innerHTML = "Chaldean";
+      document.getElementById("switch").innerHTML = "to Pythagorean";
+      document.getElementById("calculate").click();
     }
   });
 
-  $("#name").keypress(function (event) {
-    if (event.which != 8) {
+  document.getElementById("name").addEventListener("keypress", function (event) {
+    if (event.which !== 8) {
       add_symbol(event.which, function (chr, i) {
-        $("#name").val($("#name").val() + chr);
+        document.getElementById("name").value += chr;
       });
       event.preventDefault();
     }
   });
 
-  $("#clear").click(function () {
-    $("#name").val("");
-    $("#total").val("");
-    $("#vowels").val("");
-    $("#consonant").val("");
-    $("#vowels_total").val("");
-    $("#consonant_total").val("");
-    $("#number_total").val("");
+  document.getElementById("clear").addEventListener("click", function () {
+    document.getElementById("name").value = "";
+    document.getElementById("total").value = "";
+    document.getElementById("vowels").value = "";
+    document.getElementById("consonant").value = "";
+    document.getElementById("vowels_total").value = "";
+    document.getElementById("consonant_total").value = "";
+    document.getElementById("number_total").value = "";
   });
 
-  $("#name").bind("paste", function (event) {
-    var text_before = $("#name").val();
+  document.getElementById("name").addEventListener("paste", function (event) {
+    var text_before = document.getElementById("name").value;
     var code = 0;
 
-    var caret_before = $(this).caret();
+    var caret_before = this.selectionStart;
 
     setTimeout(function () {
-      var text = $("#name").val();
+      var text = document.getElementById("name").value;
       var caret_after = caret_before + text.length - text_before.length;
-      // Removing pasted text, because it should be parsed
-      // Validating symbols
       console.log(caret_before, caret_after);
-      if (
-        caret_before >= caret_after ||
-        text_before.slice(0, caret_before).valueOf() != text.slice(0, caret_before).valueOf()
-      ) {
+      if (caret_before >= caret_after || text_before.slice(0, caret_before) !== text.slice(0, caret_before)) {
         caret_before = 0;
         caret_after = text.length;
       }
@@ -189,26 +213,25 @@ $(document).ready(function () {
         add_symbol(
           code,
           function (chr, i) {
-            var new_t = $("#name").val();
-            $("#name").val(new_t.slice(0, i) + chr + new_t.slice(i + 1, new_t.length));
+            var new_t = document.getElementById("name").value;
+            document.getElementById("name").value = new_t.slice(0, i) + chr + new_t.slice(i + 1, new_t.length);
           },
           i
         );
       }
-      // 100 delay before taking new  value. Just according to standard.
     }, 100);
   });
 
-  $("#as_vowel").click(function () {
+  document.getElementById("as_vowel").addEventListener("click", function () {
     window.y_or_Y = "Y";
-    $("#notify").hide();
-    $("#name").show();
+    document.getElementById("notify").style.display = "none";
+    document.getElementById("name").style.display = "block";
   });
 
-  $("#as_consonant").click(function () {
+  document.getElementById("as_consonant").addEventListener("click", function () {
     window.y_or_Y = "y";
-    $("#notify").hide();
-    $("#name").show();
+    document.getElementById("notify").style.display = "none";
+    document.getElementById("name").style.display = "block";
   });
 });
 
@@ -358,40 +381,11 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Event listener for the calculate button
-  document.getElementById("calculateButton").addEventListener("click", function () {
+  document.getElementById("calculate").addEventListener("click", function () {
     const birthDate = document.getElementById("birthdate").value;
     if (birthDate) {
       console.log(birthDate);
       const result = calculateLifePathNumber(birthDate);
-
-      // document.getElementById("birthDay").value = `${result.dayReduction.final}`;
-      // document.getElementById("birthDays_total").value = result.dayReduction.steps
-      //   .map((step, index, array) => {
-      //     return index === array.length - 1 ? step : step + " / ";
-      //   })
-      //   .join("");
-
-      // document.getElementById("birthMonth").value = `${result.monthReduction.final}`;
-      // document.getElementById("birthMonths_total").value = result.monthReduction.steps
-      //   .map((step, index, array) => {
-      //     return index === array.length - 1 ? step : step + " / ";
-      //   })
-      //   .join("");
-
-      // console.log(result);
-      // document.getElementById("birthYear").value = `${result.yearReduction.final}`;
-      // document.getElementById("birthYears_total").value = result.yearReduction.steps
-      //   .map((step, index, array) => {
-      //     return index === array.length - 1 ? step : step + " / ";
-      //   })
-      //   .join("");
-
-      // document.getElementById("birthTotal").value = `${result.totalSum}`;
-      // document.getElementById("birthTotals_total").value = result.totalReductionSteps
-      //   .map((step, index, array) => {
-      //     return index === array.length - 1 ? step : step + " / ";
-      //   })
-      //   .join("");
 
       const resultContainer = document.getElementById("birthdate_desc");
 
@@ -401,8 +395,8 @@ document.addEventListener("DOMContentLoaded", function () {
         resultContainer.innerHTML = `
             <div >
                 <p><strong>Your Life Path is:</strong> ${result.lifePathNumber}</p>
-                <p><strong>Your Attitude is:</strong> ${result.monthReduction.final}</p>
-                <p><strong>Your Birth Number is:</strong> ${result.dayReduction.final}</p>
+                <p><strong>Your Attitude Number:</strong> ${result.monthReduction.final}</p>
+                <p><strong>Your Birth Number:</strong> ${result.dayReduction.final}</p>
                 <br />
             </div>
           `;
@@ -415,25 +409,15 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
       `;
       }
-    } else {
-      document.getElementById("result").innerText = "Please select a birthdate.";
     }
   });
 });
 
-// Event listener for the button click
-document.getElementById("calculateButton").addEventListener("click", () => {
-  const birthDate = document.getElementById("birthdate").value;
-
-  if (birthDate) {
-    const lifePathNumber = calculateLifePathNumber(birthDate);
-    document.getElementById("result").textContent = `Your Life Path Number is: ${lifePathNumber}`;
-  } else {
-    document.getElementById("result").textContent = "Please select a birthdate.";
-  }
-});
-
 document.addEventListener("DOMContentLoaded", function () {
+  console.log(getCookie("type"));
+  if (!getCookie("type") == "pyth") document.getElementById("title__calcuation").innerHTML = "Pythagorean";
+  else document.getElementById("title__calcuation").innerHTML = "Chaldean";
+
   // Event listener for the "keydown" event on the "name" input field
   document.getElementById("name").addEventListener("keydown", function (event) {
     if (event.key === "Enter" || event.keyCode === 13) {
@@ -451,8 +435,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.getElementById("switch").addEventListener("click", function () {
     var type = getCookie("type");
-    console.log(type);
-    if (type != "pyth") document.getElementById("title__calcuation").textContent = "Pythagorean";
+    console.log("t: ", type);
+    if (type == "pyth") document.getElementById("title__calcuation").textContent = "Pythagorean";
     else document.getElementById("title__calcuation").innerHTML = "Chaldean";
   });
 

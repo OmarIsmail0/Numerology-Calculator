@@ -1,0 +1,133 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Project Title</title>
+    <!-- Link to the CSS file -->
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+  </head>
+  <body>
+    <div id="mainblock">
+      <h3><span id="title"></span> Calculator</h3>
+      <p>ONLY USE NAME WINDOW TO INPUT YOUR NAME</p>
+      <p>
+        You can switch between Chaldean and Pythagorean system by pressing the button below. You can type in your name,
+        last name or both and see if they are lucky or not.
+      </p>
+      <p>
+        If the description of your name, last name is not lucky, I suggest that you contact me so I can help fix your
+        bad vibrations.
+      </p>
+      <div id="stat"></div>
+      <!--  <table id='data'>
+        <tr>
+            <td>Vowels</td>
+            <td><input type='text' id='vowels' readonly></td>
+            <td><input type='text' name='small' id='vowels_total' readonly size=2></td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td><input type='text' id='name'>
+                <div id='notify'>
+                    <div>Y as <a href='#' id='as_vowel'>vowel</a> or <a href='#'
+                            id='as_consonant'>consonant</a>?</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Consonant&nbsp;</td>
+            <td><input type='text' id='consonant' readonly></td>
+            <td><input type='text' name='small' id='consonant_total' readonly size=2></td>
+        </tr>
+        <tr>
+            <td>Total</td>
+            <td><input type='text' id='total' readonly></td>
+            <td><input type='text' id='number_total' name='small' readonly size=2></td>
+        </tr>
+    </table> -->
+
+      <div id="data">
+        <h3><span id="title__calcuation">Chaldean </span> Calculator</h3>
+        <div class="row">
+          <label for="birthdate" class="text-left col-xs-12 col-sm-12 col-md-2 col col-form-label"
+            >birthdate&nbsp;</label
+          >
+          <div class="text-left col-xs-12 col-sm-12 col-md-10 col input-group">
+            <input type="date" id="birthdate" name="birthdate" class="form-control" />
+            <input
+              type="text"
+              name="small"
+              style="visibility: hidden"
+              id="birthdates_total"
+              class="form-control"
+              readonly
+              size="2"
+            />
+          </div>
+        </div>
+
+        <div class="row">
+          <label for="vowels" class="text-left col-xs-12 col-sm-12 col-md-2 col col-form-label">Vowels</label>
+          <div class="text-left col-xs-12 col-sm-12 col-md-10 col input-group">
+            <input type="text" id="vowels" class="form-control" readonly />
+            <input type="text" name="small" id="vowels_total" class="form-control" readonly size="2" />
+          </div>
+        </div>
+        <div class="row">
+          <label for="name" class="text-left col-xs-12 col-sm-12 col-md-2 col col-form-label">Name</label>
+          <div class="text-left col-xs-12 col-sm-12 col-md-10 col input-group">
+            <input type="text" id="name" class="form-control" />
+            <input
+              type="text"
+              name="small"
+              style="visibility: hidden"
+              id="names_total"
+              class="form-control"
+              readonly
+              size="2"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <label for="consonant" class="text-left col-xs-12 col-sm-12 col-md-2 col col-form-label"
+            >Consonant&nbsp;</label
+          >
+          <div class="text-left col-xs-12 col-sm-12 col-md-10 col input-group">
+            <input type="text" id="consonant" class="form-control" readonly />
+            <input type="text" name="small" class="form-control" id="consonant_total" readonly size="2" />
+          </div>
+        </div>
+        <div class="row">
+          <label for="total" class="text-left col-xs-12 col-sm-12 col-md-2 col col-form-label">Total</label>
+
+          <div class="text-left col-xs-12 col-sm-12 col-md-10 col input-group">
+            <input type="text" id="total" class="form-control" readonly />
+            <input type="text" id="number_total" class="form-control" name="small" readonly size="2" />
+          </div>
+        </div>
+      </div>
+
+      <div id="calculate" class="button">Calculate</div>
+      <div id="switch" class="button">to Pythagorean</div>
+      <div id="clear" class="button">Clear</div>
+
+      <div id="desc">
+        <h2 style="margin-top: 0; margin-bottom: 0">Description</h2>
+
+        <br />
+        <div id="desc_content"></div>
+      </div>
+
+      <div id="birthdate_desc" style="display: flex; justify-content: center"></div>
+
+      <div id="email_cont">
+        FIND OUT IF YOUR SOUL, PERSONALITY AND TOTAL NUMBER ARE IN HARMONY WITH YOUR LIFE PATH NUMBER. FIND OUT MORE
+        ABOUT YOUR CHALDEAN VIBRATIONS. SUBSCRIBE HERE:<br />
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
